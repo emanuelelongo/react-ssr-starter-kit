@@ -1,0 +1,39 @@
+{
+  "name": "react-ssr-starter",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "example": "cd example && npm run dev",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "rm -rf Client && babel src -d Client --copy-files --ignore Server.js,views/* && mv Client/Client.js Client/index.js",
+    "build:server": "rm -rf Server && babel src -d Server --copy-files --ignore Client.js && mv Server/Server.js Server/index.js",
+    "clean": "rm -rf node_modules && rm -rf Server && rm -rf Client && rm -rf example/node_modules"
+  },
+  "files": [
+    "Client",
+    "Server"
+  ],
+  "author": "Emanuele Longo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "express-remote-handlebars": "^4.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-router-config": "^1.0.0-beta.4",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1"
+  }
+}
