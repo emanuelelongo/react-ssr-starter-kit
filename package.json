@@ -1,6 +1,6 @@
 {
   "name": "react-ssr-starter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Starter package for server side rendering with React and Redux",
   "scripts": {
     "example": "cd example && npm run dev",

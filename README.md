@@ -9,11 +9,11 @@ React/Redux starter kit with several feature enabled:
 This package includes two main parts: a **Client** and a **Server** classes.
 You instantiate a Server object on your Node.js server and a Client object on the client.
 
-The Server is reponsible to serve both static contents and rendered pages, eventually prefetching initial data (see [Component requirements](# Component requirements) section).
+The Server is reponsible to serve both static contents and rendered pages, eventually prefetching initial data (see [Component requirements](#component-requirements) section).
 
 The Client is responsible to boostrap and render the React client application inside a given DOM element.
 
-Rendering and routing are managed isomorphically in fact you need to pass reducers and routes to both client and server, see [Server configuration](# Server configuration) and [Client configuration](# Client configuration) for more details.
+Rendering and routing are managed isomorphically in fact you need to pass reducers and routes to both client and server, see [Server configuration](#server-configuration) and [Client configuration](#client-configuration) for more details.
 
 
 ## Install and usage
@@ -40,10 +40,10 @@ import Client from 'react-ssr-starter/Client';
 
 // see the "Client configuration" section
 const routes = ...
-const reducers = ...
+const rootReducer = ...
 const initialState = ...
 
-const client = new Client(routes, reducers, initialState);
+const client = new Client(routes, rootReducer, initialState);
 client.render(document.getElementById('root'));
 ```
 
@@ -54,7 +54,7 @@ The Server class constructor accepts a single configuration object parameter wit
   * staticFolder: string
   * layoutUrl: string,
   * layoutVariables: object
-  * reducers: Array
+  * rootReducer: object
   * routes: Array
   * middlewares: Array
 
@@ -62,7 +62,7 @@ The Server class constructor accepts a single configuration object parameter wit
 The Client class contructor accept the following parameters:
 
 * routes: Array
-* reducers: Array
+* rootReducer: object
 * initialState: object
 
 ## Component requirements

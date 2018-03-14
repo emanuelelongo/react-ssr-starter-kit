@@ -1,7 +1,7 @@
 import React from 'react';
 import express from 'express';
 import path from 'path';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import remoteHandlebars from 'express-remote-handlebars';
 import expressHandlebars from 'express-handlebars';
@@ -12,7 +12,7 @@ const defaultConfig = {
     staticFolder: 'assets',
     layoutUrl: null,
     layoutVariables: {},
-    reducers: [],
+    rootReducer: {},
     routes: [],
     middlewares: []
 }
@@ -35,8 +35,7 @@ export default class Server {
     this.config.middlewares.map(m => this.server.use(m));
 
     this.server.use((req, res, next) => {
-      const rootReducer = combineReducers(this.config.reducers);
-      const store = createStore(rootReducer, applyMiddleware(thunk));
+      const store = createStore(this.config.rootReducer, applyMiddleware(thunk));
       const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
   
       fetchComponentData(store.dispatch, components, req.path)

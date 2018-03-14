@@ -2,16 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 import { renderRoutes } from './helpers';
 
 export default class Client {
 
-  constructor(routes, reducers, initialState) {
+  constructor(routes, rootReducer, initialState) {
     this.routes = routes;
-    const rootReducer = combineReducers(reducers);
     const enhancer = composeWithDevTools(applyMiddleware(thunk));
     this.store = createStore(rootReducer, initialState, enhancer);
   }
