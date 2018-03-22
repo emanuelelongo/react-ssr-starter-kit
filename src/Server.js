@@ -5,6 +5,9 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import remoteHandlebars from 'express-remote-handlebars';
 import expressHandlebars from 'express-handlebars';
+import handlebars from 'handlebars';
+import Fastify from 'fastify';
+import pov from 'point-of-view';
 import { renderApp, fetchComponentData, matchRouteComponents, createRouterConfig } from './helpers';
 
 const defaultConfig = {
@@ -21,28 +24,33 @@ export default class Server {
 
   constructor(userConfig) {
     this.config = { ...defaultConfig, ...userConfig };
-    this.server = express();
+    this.server = Fastify();
     
     this.server.use(express.static(this.config.staticFolder));
-    this.server.engine('handlebars', this.config.layoutUrl 
-      ? remoteHandlebars({layout: this.config.layoutUrl})
-      : expressHandlebars()
-    );
-    this.server.set('views', path.join(__dirname, 'views'));
-    this.server.set('view engine', 'handlebars');
-    this.server.set('view cache', true);
+    this.server.register(pov, {
+      engine: {
+        handlebars,
+      },
+      templates: path.join(__dirname, 'views')
+    })
+    // this.server.engine('handlebars', this.config.layoutUrl 
+    //   ? remoteHandlebars({layout: this.config.layoutUrl})
+    //   : expressHandlebars()
+    // );
+    // this.server.set('views', path.join(__dirname, 'views'));
+    // this.server.set('view engine', 'handlebars');
+    // this.server.set('view cache', true);
     
     this.config.middlewares.map(m => this.server.use(m));
 
-    this.server.use((req, res, next) => {
+    this.server.get("*", (req, res, next) => {
       const store = createStore(this.config.rootReducer, applyMiddleware(thunk));
-      const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
+      const components = matchRouteComponents(req.raw.url, createRouterConfig(this.config.routes));
   
-      fetchComponentData(store.dispatch, components, req.path)
+      fetchComponentData(store.dispatch, components, req.raw.url)
         .then(() => {
-          const content = renderApp(req.path, store, this.config.routes);
-          res.type("text/html; charset=UTF-8");
-          res.render('main', {
+          const content = renderApp(req.raw.url, store, this.config.routes);
+          res.view('main.hbs', {
               state: JSON.stringify(store.getState()),
               content,
               ...this.config.layoutVariables

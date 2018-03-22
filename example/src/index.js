@@ -1,6 +1,6 @@
 import path from 'path';
 import { combineReducers } from 'redux';
-import Server from 'react-ssr-starter/Server';
+import Server from 'react-ssr-starter/src/Server';
 import webpackConfig from '../webpack.config';
 import routes from './app/routes';
 import * as reducers from './app/reducers';

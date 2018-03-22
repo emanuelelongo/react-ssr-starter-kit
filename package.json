@@ -19,6 +19,8 @@
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
     "express-remote-handlebars": "^4.0.0",
+    "fastify": "^1.1.1",
+    "point-of-view": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
