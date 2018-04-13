@@ -3,7 +3,7 @@ React/Redux starter kit with several feature enabled:
 
 - server side rendering
 - routing
-- ?
+- dev-server with hot reload
 
 ## Overview
 This package includes two main parts: a **Client** and a **Server** classes.
@@ -19,7 +19,7 @@ Rendering and routing are managed isomorphically in fact you need to pass reduce
 ## Install and usage
 
 ``` sh
-npm install --save react-ssr-starter
+yarn add react-ssr-starter
 ```
 
 On the server:
@@ -27,7 +27,8 @@ On the server:
 ``` js
 import Server from 'react-ssr-starter/Server';
 
-const config = { ... }; // see the "Server configuration" section
+ // see the "Server configuration" section
+const config = { ... };
 
 const server = new Server(config);
 server.start(() => console.log(`Server listening on port ${config.port}`));
@@ -43,23 +44,55 @@ const routes = ...
 const rootReducer = ...
 const initialState = ...
 
-const client = new Client(routes, rootReducer, initialState);
+const client = new Client({routes, rootReducer, initialState});
 client.render(document.getElementById('root'));
 ```
 
 ## Server configuration
 The Server class constructor accepts a single configuration object parameter with the following properties:
 
-  * port: number
-  * staticFolder: string
-  * layoutUrl: string,
-  * layoutVariables: object
-  * rootReducer: object
-  * routes: Array
-  * middlewares: Array
+#### _bundleFilename_ ( default: "bundle.js" )
+The file name that you want to give to the bundle, without any path. 
+
+#### _contentDivId_ ( default: "root" )
+The id of the div that will wrap the whole application content
+
+#### _layoutUrl_ ( default: null )
+An URL to an handlebars layout.
+The only required placeholder for the layout is `{{content}}` which will be replaced by the app content.
+Any other placeholder present will have chance to be replaced by the use of the `layoutVariables` property.
+
+#### _layoutVariables_ ( default: {} )
+An object with properties that will be used to match the layout placeholders. If the `layoutUrl` is not specified this property will have no effect.
+
+#### _middlewares_ ( default: [] )
+An array of Express middlewares. They will be registered after the `Express.static` middleware and before the main application routing middleware.
+
+#### _port_ ( default: 8080 )
+The port that will be used by the web server.
+
+#### _rootReducer_ ( default: {} )
+The already combined Redux reducers object.
+
+#### _routes_ ( default: [] )
+An array of objects with `path` and `component` properties.
+
+Example:
+``` js
+[{
+  path: '/',
+  component: Home 
+}]
+```
+
+#### _staticFolder_ ( default: 'public' )
+The folder that will be used by the `Express.static` middleware to serve static content.
+
+#### _staticPath_ ( default: '/public' )
+The virtual path where the static content will be exposed.
 
 ## Client configuration
-The Client class contructor accept the following parameters:
+The Client class contructor accept a single configuration object with the following properties:
 
 * routes: Array
 * rootReducer: object
@@ -96,21 +129,21 @@ Build the react-ssr-starter package locally
 
 ``` sh
 cd react-ssr-starter
-npm install
-npm run build
+yarn
+yarn build
 ```
 
 Link the package
 
 ``` sh
-npm link
+yarn link
 ```
 
 Launch the example app using the local built package
 
 ``` sh
 cd example
-npm link react-ssr-starter
-npm install
-npm run dev
+yarn link react-ssr-starter
+yarn
+yarn dev
 ```

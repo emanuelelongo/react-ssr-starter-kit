@@ -9,7 +9,7 @@ import { renderRoutes } from './helpers';
 
 export default class Client {
 
-  constructor(routes, rootReducer, initialState) {
+  constructor({routes, rootReducer, initialState}) {
     this.routes = routes;
     const enhancer = composeWithDevTools(applyMiddleware(thunk));
     this.store = createStore(rootReducer, initialState, enhancer);

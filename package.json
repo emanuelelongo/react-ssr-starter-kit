@@ -1,13 +1,17 @@
 {
   "name": "react-ssr-starter",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Starter package for server side rendering with React and Redux",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emanuelelongo/react-ssr-starter.git"
+  },
   "scripts": {
-    "example": "cd example && npm run dev",
-    "build": "npm run build:client && npm run build:server",
+    "example": "cd example && yarn run dev",
+    "build": "yarn run build:client && yarn run build:server",
     "build:client": "rm -rf Client && babel src -d Client --copy-files --ignore Server.js,views/* && mv Client/Client.js Client/index.js",
     "build:server": "rm -rf Server && babel src -d Server --copy-files --ignore Client.js && mv Server/Server.js Server/index.js",
-    "clean": "rm -rf node_modules && rm -rf Server && rm -rf Client && rm -rf example/node_modules"
+    "clean": "rm -rf node_modules && rm -rf Server && rm -rf Client && rm -rf example/node_modules && rm -rf example/build"
   },
   "files": [
     "Client",
@@ -22,6 +26,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
     "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",

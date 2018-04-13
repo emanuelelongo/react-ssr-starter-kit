@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "Example app for react-ssr-starter",
   "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emanuelelongo/react-ssr-starter.git"
+  },
   "scripts": {
     "dev": "NODE_ENV=development babel-node src",
     "debug": "NODE_ENV=development babel-node --inspect=9229 src",
-    "build": "rm -rf build && npm run build:server && npm run build:assets",
+    "build": "rm -rf build && yarn run build:server && yarn run build:assets",
     "build:server": "NODE_ENV=production babel src --out-dir build --copy-files",
     "build:assets": "NODE_ENV=production webpack --progress --color -p --config webpack.config.js",
     "start": "NODE_ENV=production node build",
@@ -16,7 +20,9 @@
   "license": "ISC",
   "dependencies": {
     "react": "^16.2.0",
+    "redux": "^3.7.2",
     "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
     "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "^4.2.2",
     "react-ssr-starter": "1.0.0",
