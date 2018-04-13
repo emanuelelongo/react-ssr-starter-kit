@@ -16,6 +16,7 @@ const rootReducer = combineReducers(reducers);
 const config = {
   port: 8080,
   staticFolder: path.join(__dirname, 'public'),
+  contentDivId: 'root',
   // layoutUrl: 'http://localhost:8000/_headerfooter.html',
   // layoutVariables: {
   //   meta: {

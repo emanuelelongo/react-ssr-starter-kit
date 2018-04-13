@@ -12,6 +12,7 @@ const defaultConfig = {
     staticFolder: 'public',
     staticPath: '/public',
     bundleFilename: 'bundle.js',
+    contentDivId: 'root',
     layoutUrl: null,
     layoutVariables: {},
     rootReducer: {},
@@ -47,6 +48,7 @@ export default class Server {
           res.render('main', {
               state: JSON.stringify(store.getState()),
               content,
+              contentDivId: this.config.contentDivId,
               staticPath: this.config.staticPath,
               bundleFilename: this.config.bundleFilename,
               ...this.config.layoutVariables
