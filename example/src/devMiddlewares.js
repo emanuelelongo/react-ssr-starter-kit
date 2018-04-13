@@ -12,7 +12,7 @@ export default function (baseConfig) {
   const compiler = webpack(config);
 
   return [
-    webpackDevMiddleware(compiler, { noInfo: true }),
+    webpackDevMiddleware(compiler, { noInfo: true, publicPath: '/public' }),
     webpackHotMiddleware(compiler)
   ];
 }

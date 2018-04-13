@@ -4,7 +4,7 @@ module.exports = {
   entry: './src/app/index.js',
 
   output: {
-    path: path.resolve('build/assets'),
+    path: path.resolve('build/public'),
     filename: 'bundle.js'
   },
 

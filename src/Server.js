@@ -9,7 +9,9 @@ import { renderApp, fetchComponentData, matchRouteComponents, createRouterConfig
 
 const defaultConfig = {
     port: 8080,
-    staticFolder: 'assets',
+    staticFolder: 'public',
+    staticPath: '/public',
+    bundleFilename: 'bundle.js',
     layoutUrl: null,
     layoutVariables: {},
     rootReducer: {},
@@ -23,7 +25,7 @@ export default class Server {
     this.config = { ...defaultConfig, ...userConfig };
     this.server = express();
     
-    this.server.use(express.static(this.config.staticFolder));
+    this.server.use(this.config.staticPath, express.static(this.config.staticFolder));
     this.server.engine('handlebars', this.config.layoutUrl 
       ? remoteHandlebars({layout: this.config.layoutUrl})
       : expressHandlebars()
@@ -45,6 +47,8 @@ export default class Server {
           res.render('main', {
               state: JSON.stringify(store.getState()),
               content,
+              staticPath: this.config.staticPath,
+              bundleFilename: this.config.bundleFilename,
               ...this.config.layoutVariables
             }, 
             (error, html) => error ? next(error) : res.send(html)
