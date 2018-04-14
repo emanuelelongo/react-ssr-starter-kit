@@ -14,18 +14,20 @@
     "build:server": "NODE_ENV=production babel src --out-dir build --copy-files",
     "build:assets": "NODE_ENV=production webpack --progress --color -p --config webpack.config.js",
     "start": "NODE_ENV=production node build",
-    "clean": "rm -rf build && rm -rf node_modules"
+    "clean": "rm -rf build && rm -rf node_modules",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --record --key 536ecb3f-500c-497d-8cca-b1e37937e436"
   },
   "author": "Emanuele Longo",
   "license": "ISC",
   "dependencies": {
     "react": "^16.2.0",
-    "redux": "^3.7.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-config": "^1.0.0-beta.4",
     "react-router-dom": "^4.2.2",
     "react-ssr-starter": "1.0.0",
+    "redux": "^3.7.2",
     "webpack": "^3.8.1"
   },
   "devDependencies": {
@@ -35,6 +37,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cypress": "^2.1.0",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.21.0"
   }

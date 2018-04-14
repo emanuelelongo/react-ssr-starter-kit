@@ -4,3 +4,4 @@
 Client/**
 Server/**
 example/build
+example/cypress/videos

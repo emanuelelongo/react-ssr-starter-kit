@@ -1,4 +1,6 @@
 # React-SSR-Starter
+[![CYPRESS](https://img.shields.io/badge/cypress-dashboard-brightgreen.svg)](https://dashboard.cypress.io/#/projects/zc3sey/runs)
+
 React/Redux starter kit with several feature enabled:
 
 - server side rendering
