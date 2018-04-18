@@ -11,7 +11,7 @@ React/Redux starter kit with several feature enabled:
 This package includes two main parts: a **Client** and a **Server** classes.
 You instantiate a Server object on your Node.js server and a Client object on the client.
 
-The Server is reponsible to serve both static contents and rendered pages, eventually prefetching initial data (see [Component requirements](#component-requirements) section).
+The Server is reponsible to serve both static contents and rendered pages, and prefetching initial data (see [Component requirements](#component-requirements) section).
 
 The Client is responsible to boostrap and render the React client application inside a given DOM element.
 
@@ -53,8 +53,11 @@ client.render(document.getElementById('root'));
 ## Server configuration
 The Server class constructor accepts a single configuration object parameter with the following properties:
 
-#### _bundleFilename_ ( default: "bundle.js" )
-The file name that you want to give to the bundle, without any path. 
+#### _bundleJsFilename_ ( default: "bundle.js" )
+The file name that you want to give to the js bundle, without any path. 
+
+#### _bundleCssFilename_ ( default: "bundle.css" )
+The file name that you want to give to the css bundle, without any path. 
 
 #### _contentDivId_ ( default: "root" )
 The id of the div that will wrap the whole application content
@@ -87,11 +90,15 @@ Example:
 }]
 ```
 
+#### _serveStatic_ ( default: false )
+Enable the `Express.static` middleware activating the static file serving. The folder served is the one specified by the `staticFolder` parameter.
+
 #### _staticFolder_ ( default: 'public' )
-The folder that will be used by the `Express.static` middleware to serve static content.
+The folder that will be used by the `Express.static` middleware (if enabled by the `serveStatic` parameter) to serve static content.
 
 #### _staticPath_ ( default: '/public' )
-The virtual path where the static content will be exposed.
+The path that will be prefixed for linking the `bundle.js` and `bundle.css` files.
+
 
 ## Client configuration
 The Client class contructor accept a single configuration object with the following properties:
