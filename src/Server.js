@@ -9,9 +9,11 @@ import { renderApp, fetchComponentData, matchRouteComponents, createRouterConfig
 
 const defaultConfig = {
     port: 8080,
+    serveStatic: false,
     staticFolder: 'public',
     staticPath: '/public',
-    bundleFilename: 'bundle.js',
+    bundleJsFilename: 'bundle.js',
+    bundleCssFilename: 'bundle.css',
     contentDivId: 'root',
     layoutUrl: null,
     layoutVariables: {},
@@ -26,7 +28,10 @@ export default class Server {
     this.config = { ...defaultConfig, ...userConfig };
     this.server = express();
     
-    this.server.use(this.config.staticPath, express.static(this.config.staticFolder));
+    if(this.config.serveStatic) {
+      this.server.use(this.config.staticPath, express.static(this.config.staticFolder));
+    }
+
     this.server.engine('handlebars', this.config.layoutUrl 
       ? remoteHandlebars({layout: this.config.layoutUrl})
       : expressHandlebars()
@@ -50,7 +55,8 @@ export default class Server {
               content,
               contentDivId: this.config.contentDivId,
               staticPath: this.config.staticPath,
-              bundleFilename: this.config.bundleFilename,
+              bundleJsFilename: this.config.bundleJsFilename,
+              bundleCssFilename: this.config.bundleCssFilename,
               ...this.config.layoutVariables
             }, 
             (error, html) => error ? next(error) : res.send(html)
