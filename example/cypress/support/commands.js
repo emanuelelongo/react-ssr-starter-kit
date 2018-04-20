@@ -1,5 +1,7 @@
-Cypress.Commands.add('stripHtmlComments', {
+const regex = /(<([^>]+)>)/ig;
+
+Cypress.Commands.add('shouldIncludeText', {
   prevSubject: true
-}, (subject) => {
-  return cy.wrap(subject).invoke('replace', /<!-- -->/g, '');
+}, (subject, html) => {
+  cy.wrap(subject).invoke('replace', regex, '').should('include', html.replace(regex, ''));
 });

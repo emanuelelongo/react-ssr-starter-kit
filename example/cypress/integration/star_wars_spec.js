@@ -14,7 +14,7 @@ describe('Star Wars Test', function() {
   it('Server-side and Client-side rendered content match for planets list', function() {
     cy.wait(2000)
     cy.document().then((doc) => {
-      cy.request('/planets').its('body').stripHtmlComments().should('include', doc.body.innerHTML);
+      cy.request('/planets').its('body').shouldIncludeText(doc.body.innerHTML);
     });
   })
 
@@ -26,7 +26,7 @@ describe('Star Wars Test', function() {
   it('Server-side and Client-side rendered content match for planets details', function() {
     cy.wait(2000)
     cy.document().then((doc) => {
-      cy.request('/planets/2').its('body').stripHtmlComments().should('include', doc.body.innerHTML);
+      cy.request('/planets/2').its('body').shouldIncludeText(doc.body.innerHTML);
     });
   })
 })
