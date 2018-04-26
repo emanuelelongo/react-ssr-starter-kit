@@ -70,6 +70,9 @@ Any other placeholder present will have chance to be replaced by the use of the 
 #### _layoutVariables_ ( default: {} )
 An object with properties that will be used to match the layout placeholders. If the `layoutUrl` is not specified this property will have no effect.
 
+#### _headersToForward_ ( default: ['user-agent'] )
+An array of header names to forward in the HTTP request of the remote layout.
+
 #### _middlewares_ ( default: [] )
 An array of Express middlewares. They will be registered after the `Express.static` middleware and before the main application routing middleware.
 
