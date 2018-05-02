@@ -16,9 +16,9 @@ const defaultConfig = {
     bundleJsFilename: 'bundle.js',
     bundleCssFilename: 'bundle.css',
     contentDivId: 'root',
-    layoutUrl: null,
     layoutVariables: {},
     headersToForward: ['user-agent'],
+    layoutUrl: null,
     rootReducer: {},
     routes: [],
     middlewares: []
@@ -44,8 +44,9 @@ export default class Server {
     this.server.use((req, res, next) => {
       const store = createStore(this.config.rootReducer, applyMiddleware(thunk));
       const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));	
-      const layoutPromise = this.layoutEngine.resolveLayout({headers: pick(req.headers, this.config.headersToForward)});
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path);
+      const headers = pick(req.headers, this.config.headersToForward);
+      const layoutPromise = this.layoutEngine.resolveLayout(req, {headers});
 
       Promise.all([layoutPromise, componentDataPromise])
         .then(([layout]) => {  

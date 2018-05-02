@@ -8,13 +8,17 @@ export default class LayoutEngine {
     this.getLayout = remoteHandlebars.getLayout.bind(remoteHandlebars);
   }
 
-  resolveLayout(options) {
+  resolveLayout(req, options) {
     if(!this.layoutUrl) {
       return Promise.resolve();
     }
-   
+     
     return new Promise((resolve, reject) => {
-      this.getLayout({ headers: options.headers, url: this.layoutUrl }, (err, layout) => {
+      const resolvedLayoutUrl = (typeof this.layoutUrl) === 'function'
+        ? this.layoutUrl(req)
+        : this.layoutUrl;
+
+      this.getLayout({ headers: options.headers, url: resolvedLayoutUrl }, (err, layout) => {
         if(err) return reject(err);
         resolve(layout);
       });
