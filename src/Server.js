@@ -41,7 +41,7 @@ export default class Server {
     this.server.set('view cache', true);   
     this.config.middlewares.map(m => this.server.use(m));    
 
-    this.server.use((req, res, next) => {
+    this.server.use((req, res) => {
       const store = createStore(this.config.rootReducer, applyMiddleware(thunk));
       const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));	
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path);
@@ -61,10 +61,11 @@ export default class Server {
             bundleJsFilename: this.config.bundleJsFilename,
             bundleCssFilename: this.config.bundleCssFilename,
             ...this.config.layoutVariables
-          }, 
-            (error, html) => error ? next(error) : res.send(html)
-          );
+          });
         })
+        .catch(err => {
+          res.status(500).send(err);
+        });
     });
   }
 
