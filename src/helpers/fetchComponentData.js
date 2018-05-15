@@ -8,11 +8,8 @@ function dispatchIfMatch(dispatch, requirement, path, query) {
     : Promise.resolve();
 }
 
-export default function fetchComponentData(dispatch, components, path, query) {
-  const requirements = components.reduce( (prev, current) => {
-    return current ? (current.requirements || []).concat(prev) : prev;
-  }, []);
-  const promises = requirements.map(requirement => {
+export default function fetchComponentData(dispatch, route, path, query) {
+  const promises = route.component.requirements.map(requirement => {
     return typeof(requirement) === 'function'
       ? dispatch(requirement())
       : dispatchIfMatch(dispatch, requirement, path, query);

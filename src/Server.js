@@ -43,8 +43,12 @@ export default class Server {
 
     this.server.use((req, res) => {
       const store = createStore(this.config.rootReducer, applyMiddleware(thunk));
-      const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
-      const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
+      const route = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
+      if(!route) {
+        res.status(404).end('uh?');
+        return;
+      }
+      const componentDataPromise = fetchComponentData(store.dispatch, route, req.path, req.query);
       const headers = pick(req.headers, this.config.headersToForward);
       const layoutPromise = this.layoutEngine.resolveLayout(req, {headers});
 
