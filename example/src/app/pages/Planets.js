@@ -18,7 +18,7 @@ class Planets extends React.Component {
     return (
       <div>
         <Link to={'/'}>Star Wars</Link>
-        <h2>~ Planets ~</h2>
+        <h2>Planets</h2>
           <div>
             <ul> 
               { planets.map(i => <PlanetItem key={i.id} {...i}/>) } 

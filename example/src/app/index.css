@@ -1,4 +1,14 @@
+@font-face {
+    font-family: StarWars;
+    src: url(/static/Starjedi.ttf);
+}
+@font-face {
+    font-family: StarWars;
+    src: url(/static/Starjhol.ttf);
+    font-weight: bold;
+}
 body {
+    font-family: StarWars;
     background-color: #222;
     color: yellow;
 }

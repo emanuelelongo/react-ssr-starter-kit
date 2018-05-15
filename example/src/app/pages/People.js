@@ -18,7 +18,7 @@ class People extends React.Component {
       <div>
         <Link to={'/'}>Star Wars</Link>
         <br/>
-        <h2>~ People ~</h2>
+        <h2>People</h2>
           <table border="1">
           <thead>
             <tr>
