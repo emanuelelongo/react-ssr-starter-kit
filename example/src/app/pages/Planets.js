@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PlanetItem from '../components/PlanetItem';
 import PlanetDetails from '../components/PlanetDetails';
@@ -17,6 +17,7 @@ class Planets extends React.Component {
 
     return (
       <div>
+        <Link to={'/'}>Star Wars</Link>
         <h2>~ Planets ~</h2>
           <div>
             <ul> 
