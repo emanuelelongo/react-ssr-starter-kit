@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 // In real case please import from 'react-ssr-starter/Client' without 'src'
 // here we're importing from source to avoid to recompile during development
-import Client from 'react-ssr-starter/src/Client';
+import Client from 'react-ssr-starter/Client';
 import * as reducers from './reducers';
 import routes from './routes';
 
