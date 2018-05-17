@@ -30,8 +30,7 @@ export default class Server {
     this.config = { ...defaultConfig, ...userConfig };
     this.server = express();
     this.layoutEngine = new LayoutEngine(this.config.layoutUrl);
-    console.log('staticFolder', this.config.staticFolder); 
-    console.log('staticPath', this.config.staticPath); 
+    
     if(this.config.serveStatic) {
       this.server.use(this.config.staticPath, express.static(this.config.staticFolder));
     }
