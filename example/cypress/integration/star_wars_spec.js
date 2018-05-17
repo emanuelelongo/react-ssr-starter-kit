@@ -7,7 +7,7 @@ describe('Star Wars Test', function() {
   })
 
   it('Navigate to the Planets page', function() {
-    cy.get('a').click();
+    cy.contains('Go to Planets List').click();
     cy.url().should('eq', `${baseUrl}/planets`);
   })
 
@@ -19,7 +19,7 @@ describe('Star Wars Test', function() {
   })
 
   it('Open planet details', function() {
-    cy.get('a:first').click();
+    cy.contains('Alderaan').click();
     cy.url().should('eq', `${baseUrl}/planets/2`);
   })
 
@@ -28,5 +28,16 @@ describe('Star Wars Test', function() {
     cy.document().then((doc) => {
       cy.request('/planets/2').its('body').shouldIncludeText(doc.body.innerHTML);
     });
+  })
+
+  it('Successfully back to home page', function() {
+    cy.contains('Star Wars').click();
+    cy.get('h2').should('contain', 'Star Wars')
+  })
+
+  it('Make a people search', function() {
+    cy.get('input').type('solo{enter}');
+    cy.get('h2').should('contain', 'People');
+    cy.get('table').find('tbody tr:last').find('td:first').should('have.text', 'Han Solo');
   })
 })
