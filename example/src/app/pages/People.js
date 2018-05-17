@@ -5,10 +5,8 @@ import { fetchPeople } from '../actions';
 
 class People extends React.Component {
   componentDidMount() {
-    if(this.props.people.length === 0) {
       const search = this.props.location.search.split('=')[1];
       this.props.fetchPeople(search);
-    }
   }
 
   render() {

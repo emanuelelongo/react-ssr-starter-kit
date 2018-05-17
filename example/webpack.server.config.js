@@ -1,14 +1,17 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   target: 'node',
   externals: [nodeExternals()],
   entry: ['./src/index.js'],
-
   output: {
     path: path.resolve('build'),
-    filename: 'server.js'
+    filename: 'index.js'
+  },
+  node: {
+    __dirname: false
   },
   module: {
     rules: [
@@ -19,12 +22,10 @@ module.exports = {
         options: {
           presets: ['react', ['env', { targets: { node: 'current' } }], 'stage-0']
         }
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
-        exclude: /node_modules/,
-        loader: 'url-loader?limit=1024&name=public/[name].[ext]'
       }
     ]
   },
+  plugins: [
+    new CopyWebpackPlugin([ {from: 'src/public', to: 'public'} ])
+  ]
 };
