@@ -13,9 +13,7 @@ const defaultConfig = {
     serveStatic: false,
     staticFolder: 'public',
     staticPath: '/public',
-    bundleJsFilename: 'bundle.js',
-    bundleCssFilename: 'bundle.css',
-    contentDivId: 'root',
+    template: null,
     layoutVariables: {},
     headersToForward: ['user-agent'],
     layoutUrl: null,
@@ -36,7 +34,6 @@ export default class Server {
     }
 
     this.server.engine('handlebars', this.layoutEngine.engine);
-    this.server.set('views', path.join(__dirname, 'views'));
     this.server.set('view engine', 'handlebars');
     this.server.set('view cache', true);   
     this.config.middlewares.map(m => this.server.use(m));    
@@ -52,14 +49,10 @@ export default class Server {
         .then(([layout]) => {  
           const content = renderApp(req.path, store, this.config.routes);
           res.type("text/html; charset=UTF-8");
-          res.render('main', {
+          res.render(this.config.template, {
             layout,
             state: JSON.stringify(store.getState()),
             content,
-            contentDivId: this.config.contentDivId,
-            staticPath: this.config.staticPath,
-            bundleJsFilename: this.config.bundleJsFilename,
-            bundleCssFilename: this.config.bundleCssFilename,
             ...this.config.layoutVariables
           });
         })

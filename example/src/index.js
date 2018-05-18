@@ -14,6 +14,7 @@ const rootReducer = combineReducers(reducers);
 const config = {
   port: 8080,
   serveStatic: true,
+  template: path.join(__dirname, 'views/main.handlebars'),
   staticFolder: path.join(__dirname, 'public'),
   staticPath: '/static',
   contentDivId: 'root',
