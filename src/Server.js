@@ -19,7 +19,11 @@ const defaultConfig = {
     layoutUrl: null,
     rootReducer: {},
     routes: [],
-    middlewares: []
+    middlewares: [],
+    onError: (req, res, err) => {
+      console.log(err);
+      res.status(500).send(err.message);
+    }
 }
 
 export default class Server {
@@ -56,8 +60,8 @@ export default class Server {
             ...this.config.layoutVariables
           });
         })
-        .catch(err => {
-          res.status(500).send(err);
+        .catch((err, rest) => {
+          this.config.onError(req, res, err);
         });
     });
   }
