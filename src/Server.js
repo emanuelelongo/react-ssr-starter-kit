@@ -18,6 +18,7 @@ const defaultConfig = {
     headersToForward: ['user-agent'],
     layoutUrl: null,
     rootReducer: {},
+    preloadedState: {},
     routes: [],
     middlewares: [],
     onError: (req, res, err) => {
@@ -43,7 +44,7 @@ export default class Server {
     this.config.middlewares.map(m => this.server.use(m));    
 
     this.server.use((req, res) => {
-      const store = createStore(this.config.rootReducer, applyMiddleware(thunk));
+      const store = createStore(this.config.rootReducer, this.config.preloadedState, applyMiddleware(thunk));
       const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
       const headers = pick(req.headers, this.config.headersToForward);
