@@ -14,7 +14,7 @@ const defaultConfig = {
     staticFolder: 'public',
     staticPath: '/public',
     template: null,
-    layoutVariables: {},
+    layoutVariables: () => {},
     headersToForward: ['user-agent'],
     layoutUrl: null,
     rootReducer: {},
@@ -31,6 +31,9 @@ export default class Server {
 
   constructor(userConfig) {
     this.config = { ...defaultConfig, ...userConfig };
+    if(typeof this.config.layoutVariables !== 'function') {
+        this.config.layoutVariables = () => this.config.layoutVariables;
+    }
     this.server = express();
     this.layoutEngine = new LayoutEngine(this.config.layoutUrl);
     
@@ -58,7 +61,7 @@ export default class Server {
             layout,
             state: JSON.stringify(store.getState()),
             content,
-            ...this.config.layoutVariables
+            ...this.config.layoutVariables()
           });
         })
         .catch((err, rest) => {
