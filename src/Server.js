@@ -32,7 +32,8 @@ export default class Server {
   constructor(userConfig) {
     this.config = { ...defaultConfig, ...userConfig };
     if(typeof this.config.layoutVariables !== 'function') {
-        this.config.layoutVariables = () => this.config.layoutVariables;
+        const variables = {...this.config.layoutVariables};
+        this.config.layoutVariables = () => variables;
     }
     this.server = express();
     this.layoutEngine = new LayoutEngine(this.config.layoutUrl);
@@ -52,7 +53,7 @@ export default class Server {
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
       const headers = pick(req.headers, this.config.headersToForward);
       const layoutPromise = this.layoutEngine.resolveLayout(req, {headers});
-
+      
       Promise.all([layoutPromise, componentDataPromise])
         .then(([layout]) => {  
           const content = renderApp(req.path, store, this.config.routes);
