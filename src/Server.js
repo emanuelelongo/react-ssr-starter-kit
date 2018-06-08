@@ -31,21 +31,21 @@ export default class Server {
 
   constructor(userConfig) {
     this.config = { ...defaultConfig, ...userConfig };
-    if(typeof this.config.layoutVariables !== 'function') {
+    if (typeof this.config.layoutVariables !== 'function') {
         const variables = {...this.config.layoutVariables};
         this.config.layoutVariables = () => variables;
     }
     this.server = express();
     this.layoutEngine = new LayoutEngine(this.config.layoutUrl);
-    
-    if(this.config.serveStatic) {
+
+    if (this.config.serveStatic) {
       this.server.use(this.config.staticPath, express.static(this.config.staticFolder));
     }
 
     this.server.engine('handlebars', this.layoutEngine.engine);
     this.server.set('view engine', 'handlebars');
-    this.server.set('view cache', true);   
-    this.config.middlewares.map(m => this.server.use(m));    
+    this.server.set('view cache', true);
+    this.config.middlewares.map(m => this.server.use(m));
 
     this.server.use((req, res) => {
       const store = createStore(this.config.rootReducer, this.config.preloadedState, applyMiddleware(thunk));
@@ -53,9 +53,9 @@ export default class Server {
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
       const headers = pick(req.headers, this.config.headersToForward);
       const layoutPromise = this.layoutEngine.resolveLayout(req, {headers});
-      
+
       Promise.all([layoutPromise, componentDataPromise])
-        .then(([layout]) => {  
+        .then(([layout]) => {
           const content = renderApp(req.path, store, this.config.routes);
           res.type("text/html; charset=UTF-8");
           res.render(this.config.template, {
@@ -72,6 +72,20 @@ export default class Server {
   }
 
   start(callback) {
+    const shutDown = (code, srv) => {
+      console.log('received kill signal: shutting down gracefully');
+      srv.close(() => {
+        console.log('closed out remaining connections');
+        process.exit(0);
+      });
+
+      setTimeout(() => {
+        console.error('could not close connections in time: forcefully shutting down');
+        process.exit(1);
+      }, 10000);
+    }
     this.server.listen(this.config.port, callback);
+    process.on('SIGTERM', code => shutDown(code, this.server));
+    process.on('SIGINT', code => shutDown(code, this.server));
   }
 }
