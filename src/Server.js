@@ -84,8 +84,8 @@ export default class Server {
         process.exit(1);
       }, 10000);
     }
-    this.server.listen(this.config.port, callback);
-    process.on('SIGTERM', code => shutDown(code, this.server));
-    process.on('SIGINT', code => shutDown(code, this.server));
+    const srv = this.server.listen(this.config.port, callback);
+    process.on('SIGTERM', code => shutDown(code, srv));
+    process.on('SIGINT', code => shutDown(code, srv));
   }
 }
