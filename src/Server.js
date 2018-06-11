@@ -21,6 +21,7 @@ const defaultConfig = {
     preloadedState: {},
     routes: [],
     middlewares: [],
+    inject: null,
     onError: (req, res, err) => {
       console.log(err);
       res.status(500).send(err.message);
@@ -48,7 +49,7 @@ export default class Server {
     this.config.middlewares.map(m => this.server.use(m));
 
     this.server.use((req, res) => {
-      const store = createStore(this.config.rootReducer, this.config.preloadedState, applyMiddleware(thunk));
+      const store = createStore(this.config.rootReducer, this.config.preloadedState, applyMiddleware(thunk.withExtraArgument(this.config.inject)));
       const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
       const headers = pick(req.headers, this.config.headersToForward);
