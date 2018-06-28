@@ -18,7 +18,7 @@ const defaultConfig = {
     headersToForward: ['user-agent'],
     layoutUrl: null,
     rootReducer: {},
-    preloadedState: {},
+    preloadState: () => {},
     routes: [],
     middlewares: [],
     inject: null,
@@ -48,27 +48,28 @@ export default class Server {
     this.server.set('view cache', true);
     this.config.middlewares.map(m => this.server.use(m));
 
-    this.server.use((req, res) => {
-      const store = createStore(this.config.rootReducer, this.config.preloadedState, applyMiddleware(thunk.withExtraArgument(this.config.inject)));
+    this.server.use(async (req, res) => {
+      const preloadedState = await this.config.preloadState();
+      const store = createStore(this.config.rootReducer, preloadedState, applyMiddleware(thunk.withExtraArgument(this.config.inject)));
       const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
       const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
       const headers = pick(req.headers, this.config.headersToForward);
       const layoutPromise = this.layoutEngine.resolveLayout(req, {headers});
 
-      Promise.all([layoutPromise, componentDataPromise])
-        .then(([layout]) => {
-          const content = renderApp(req.path, store, this.config.routes);
-          res.type("text/html; charset=UTF-8");
-          res.render(this.config.template, {
-            layout,
-            state: JSON.stringify(store.getState()),
-            content,
-            ...this.config.layoutVariables()
-          });
-        })
-        .catch((err, rest) => {
-          this.config.onError(req, res, err);
+      try {
+        const [layout] = await Promise.all([layoutPromise, componentDataPromise]);
+        const content = renderApp(req.path, store, this.config.routes);
+        res.type("text/html; charset=UTF-8");
+        res.render(this.config.template, {
+          layout,
+          state: JSON.stringify(store.getState()),
+          content,
+          ...this.config.layoutVariables()
         });
+      }
+      catch(err) {
+        this.config.onError(req, res, err);
+      }
     });
   }
 
