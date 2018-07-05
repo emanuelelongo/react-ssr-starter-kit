@@ -22,6 +22,7 @@ const defaultConfig = {
     routes: [],
     middlewares: [],
     inject: null,
+    wrapper: null,
     onError: (req, res, err) => {
       console.log(err);
       res.status(500).send(err.message);
@@ -59,7 +60,7 @@ export default class Server {
 
         Promise.all([layoutPromise, componentDataPromise])
         .then(([layout]) => {
-          const content = renderApp(req.path, store, this.config.routes);
+          const content = renderApp(req.path, store, this.config.routes, this.config.wrapper);
           res.type("text/html; charset=UTF-8");
           res.render(this.config.template, {
             layout,

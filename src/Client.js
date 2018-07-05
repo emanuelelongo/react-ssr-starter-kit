@@ -9,17 +9,19 @@ import { renderRoutes } from './helpers';
 
 export default class Client {
 
-  constructor({routes, rootReducer, initialState, inject}) {
+  constructor({routes, rootReducer, initialState, inject, wrapper}) {
     this.routes = routes;
     const enhancer = composeWithDevTools(applyMiddleware(thunk.withExtraArgument(inject)));
     this.store = createStore(rootReducer, initialState, enhancer);
+    this.wrapper = wrapper;
   }
 
   render(domElement) {
+    const App = this.wrapper || 'div'; 
     ReactDOM.hydrate(
       <Provider store={this.store}>
         <Router>
-          <div>{renderRoutes(this.routes)}</div>
+          <App>{renderRoutes(this.routes)}</App>
         </Router>
       </Provider>
       , domElement);

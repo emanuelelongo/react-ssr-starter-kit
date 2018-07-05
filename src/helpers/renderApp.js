@@ -4,13 +4,14 @@ import { StaticRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import renderRoutes from './renderRoutes';
 
-function renderApp(path, store, routes) {
+function renderApp(path, store, routes, wrapper) {
 
   const context = {};
+  const App = wrapper || 'div';
   const view =
     <Provider store={store}>
       <Router location={path} context={context}>
-        <div>{renderRoutes(routes)}</div>
+        <App>{renderRoutes(routes)}</App>
       </Router>
     </Provider>;
 
