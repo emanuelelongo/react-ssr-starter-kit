@@ -9,9 +9,9 @@ import { renderRoutes } from './helpers';
 
 export default class Client {
 
-  constructor({routes, rootReducer, initialState, inject, wrapper}) {
+  constructor({routes, rootReducer, initialState, inject, wrapper, middlewares = []}) {
     this.routes = routes;
-    const enhancer = composeWithDevTools(applyMiddleware(thunk.withExtraArgument(inject)));
+    const enhancer = composeWithDevTools(applyMiddleware(thunk.withExtraArgument(inject), ...middlewares));
     this.store = createStore(rootReducer, initialState, enhancer);
     this.wrapper = wrapper;
   }
