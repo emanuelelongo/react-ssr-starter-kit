@@ -2,6 +2,8 @@ import React from 'react';
 import express from 'express';
 import path from 'path';
 import { createStore, applyMiddleware } from 'redux';
+import createMemoryHistory from 'history/createMemoryHistory';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import thunk from 'redux-thunk';
 import expressHandlebars from 'express-handlebars';
 import pick from 'lodash.pick';
@@ -49,10 +51,19 @@ export default class Server {
     this.server.set('view cache', true);
     this.config.middlewares.map(m => this.server.use(m));
 
+    const history = createMemoryHistory();
+
     this.server.use((req, res) => {
       this.config.preloadState()
       .then(preloadedState => {
-        const store = createStore(this.config.rootReducer, preloadedState, applyMiddleware(thunk.withExtraArgument(this.config.inject)));
+        const store = createStore(
+          connectRouter(history)(this.config.rootReducer),
+          preloadedState,
+          applyMiddleware(
+            routerMiddleware(history),
+            thunk.withExtraArgument(this.config.inject)
+          )
+        );
         const components = matchRouteComponents(req.path, createRouterConfig(this.config.routes));
         const componentDataPromise = fetchComponentData(store.dispatch, components, req.path, req.query);
         const headers = pick(req.headers, this.config.headersToForward);
@@ -60,7 +71,7 @@ export default class Server {
 
         Promise.all([layoutPromise, componentDataPromise])
         .then(([layout]) => {
-          const content = renderApp(req.path, store, this.config.routes, this.config.wrapper);
+          const content = renderApp(req.path, store, this.config.routes, this.config.wrapper, history);
           res.type("text/html; charset=UTF-8");
           res.render(this.config.template, {
             layout,
