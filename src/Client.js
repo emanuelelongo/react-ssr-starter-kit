@@ -9,8 +9,6 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import thunk from 'redux-thunk';
 import { renderRoutes } from './helpers';
 
-const history = createBrowserHistory();
-
 export default class Client {
 
   constructor({routes, rootReducer, initialState, inject, wrapper, middlewares = []}) {
@@ -35,7 +33,7 @@ export default class Client {
     const App = this.wrapper || 'div'; 
     ReactDOM.hydrate(
       <Provider store={this.store}>
-        <ConnectedRouter history={history}>
+        <ConnectedRouter history={this.history}>
             <App>{renderRoutes(this.routes)}</App>
         </ConnectedRouter>
       </Provider>

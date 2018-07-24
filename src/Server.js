@@ -51,9 +51,12 @@ export default class Server {
     this.server.set('view cache', true);
     this.config.middlewares.map(m => this.server.use(m));
 
-    const history = createMemoryHistory();
 
     this.server.use((req, res) => {
+      const history = createMemoryHistory({
+        initialEntries: [req.path]
+      });
+
       this.config.preloadState()
       .then(preloadedState => {
         const store = createStore(
@@ -92,11 +95,6 @@ export default class Server {
         console.log('closed out remaining connections');
         process.exit(0);
       });
-
-      setTimeout(() => {
-        console.error('could not close connections in time: forcefully shutting down');
-        process.exit(1);
-      }, 10000);
     }
     const srv = this.server.listen(this.config.port, callback);
     process.on('SIGTERM', code => shutDown(code, srv));
