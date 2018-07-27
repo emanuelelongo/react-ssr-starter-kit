@@ -54,7 +54,7 @@ export default class Server {
 
     this.server.use((req, res) => {
       const history = createMemoryHistory({
-        initialEntries: [req.path]
+        initialEntries: [req.url]
       });
 
       this.config.preloadState()
