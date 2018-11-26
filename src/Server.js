@@ -20,7 +20,7 @@ const defaultConfig = {
     headersToForward: ['user-agent'],
     layoutUrl: null,
     rootReducer: {},
-    preloadState: () => Promise.resolve({}),
+    preloadState: (req) => Promise.resolve({}),
     routes: [],
     middlewares: [],
     inject: null,
@@ -57,7 +57,7 @@ export default class Server {
         initialEntries: [req.url]
       });
 
-      this.config.preloadState()
+      this.config.preloadState(req)
       .then(preloadedState => {
         const store = createStore(
           connectRouter(history)(this.config.rootReducer),
