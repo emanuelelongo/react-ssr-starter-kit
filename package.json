@@ -1,10 +1,10 @@
 {
-    "name": "react-ssr-kit",
+    "name": "react-ssr-starter-kit",
     "version": "5.0.0",
     "description": "Starter kit for server side rendering with React and Redux",
     "repository": {
 	"type": "git",
-	"url": "https://github.com/emanuelelongo/react-ssr-kit.git"
+	"url": "https://github.com/emanuelelongo/react-ssr-starter-kit.git"
     },
     "scripts": {
 	"example": "cd example && yarn run dev",

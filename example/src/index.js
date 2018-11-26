@@ -2,7 +2,7 @@ import express from 'express';
 import hbs from 'hbs';
 import path from 'path';
 import { combineReducers } from 'redux';
-import SSRMiddleware from 'react-ssr-kit/SSRMiddleware';
+import SSRMiddleware from 'react-ssr-starter-kit/SSRMiddleware';
 import webpackConfig from '../webpack.client.config';
 import routes from './app/routes';
 import * as reducers from './app/reducers';

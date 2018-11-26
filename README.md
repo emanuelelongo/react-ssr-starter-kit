@@ -1,4 +1,4 @@
-# React-SSR-kit
+# React-ssr-starter-kit
 [![CYPRESS](https://img.shields.io/badge/cypress-dashboard-brightgreen.svg)](https://dashboard.cypress.io/#/projects/zc3sey/runs)
 
 This package is meant to help with the creation of an _isomorphic_ **React + Redux** application.
@@ -18,14 +18,14 @@ Rendering and routing are managed isomorphically in fact you need to pass a comm
 ## Install and usage
 
 ``` sh
-yarn add react-ssr-kit
+yarn add react-ssr-starter-kit
 ```
 
 On the server:
 
 ``` js
 import express from 'express';
-import SSRMiddleware from 'react-ssr-kit/SSRMiddleware';
+import SSRMiddleware from 'react-ssr-starter-kit/SSRMiddleware';
 
  // see the "SSRMiddleware configuration" section
 const config = { ... };
@@ -49,7 +49,7 @@ server.listen(8080);
 On the client:
 
 ``` js
-import Client from 'react-ssr-kit/Client';
+import Client from 'react-ssr-starter-kit/Client';
 
 // see the "Client configuration" section
 const config = { ... };
@@ -124,13 +124,13 @@ All the main code is inside the `/src` folder.
 
 The `/example` folder contains an example application so that you can easly experiment or add new functionality.
 
-To make development more confortable the example app is already linked to the react-ssr-kit package _by file system_ (look at its package.json) 
+To make development more confortable the example app is already linked to the react-ssr-starter-kit package _by file system_ (look at its package.json) 
 so if you make some change to the `react_ssr_kit`, simply build it to make changes available to the example app.
 
-Build the react-ssr-kit package locally
+Build the react-ssr-starter-kit package locally
 
 ``` sh
-cd react-ssr-kit
+cd react-ssr-starter-kit
 yarn
 yarn build
 ```

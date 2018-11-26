@@ -1,11 +1,11 @@
 {
   "name": "example",
   "version": "1.0.0",
-  "description": "Example app for react-ssr-kit",
+  "description": "Example app for react-ssr-starter-kit",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.yoox.net/ys/react-ssr-kit.git"
+    "url": "ssh://git@git.yoox.net/ys/react-ssr-starter-kit.git"
   },
   "scripts": {
     "dev": "NODE_ENV=development babel-node src",
@@ -28,7 +28,7 @@
     "react-router": "4.3.1",
     "react-router-config": "1.0.0-beta.4",
     "react-router-dom": "4.3.1",
-    "react-ssr-kit": "file:..",
+    "react-ssr-starter-kit": "file:..",
     "redux": "4.0.1"
   },
   "devDependencies": {
