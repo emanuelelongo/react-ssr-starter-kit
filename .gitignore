@@ -2,6 +2,6 @@
 node_modules
 *.log
 Client/**
-Server/**
+SSRMiddleware/**
 example/build
 example/cypress/videos

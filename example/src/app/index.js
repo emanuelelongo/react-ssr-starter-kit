@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import Client from 'react-ssr-starter/Client';
+import Client from 'react-ssr-kit/Client';
 import * as reducers from './reducers';
 import routes from './routes';
 

@@ -18,11 +18,8 @@ module.exports = {
     rules: [
       {
         test: /\.js$/i,
-        exclude: /node_modules\.*/,
         loader: 'babel-loader',
-        options: {
-          presets: ['react', ['env', { targets: { node: 'current' } }], 'stage-0']
-        }
+        exclude: /node_modules/
       }
     ]
   },

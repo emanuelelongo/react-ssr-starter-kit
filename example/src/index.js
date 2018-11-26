@@ -1,6 +1,8 @@
+import express from 'express';
+import hbs from 'hbs';
 import path from 'path';
 import { combineReducers } from 'redux';
-import Server from 'react-ssr-starter/Server';
+import SSRMiddleware from 'react-ssr-kit/SSRMiddleware';
 import webpackConfig from '../webpack.client.config';
 import routes from './app/routes';
 import * as reducers from './app/reducers';
@@ -13,25 +15,36 @@ const middlewares = process.env.NODE_ENV === 'development'
 
 const rootReducer = combineReducers(reducers);
 const config = {
-  port: 8080,
-  serveStatic: true,
-  template: path.join(__dirname, 'views/main.handlebars'),
   staticFolder: path.join(__dirname, 'public'),
-  staticPath: '/static',
   contentDivId: 'root',
   rootReducer,
   routes,
-  middlewares
+  middlewares,
+  initialState: () => {},
+  inject: () => {}
 };
-
-const server = new Server(config);
+const template = path.join(__dirname, 'views/main.handlebars');
+const ssrMiddleware = new SSRMiddleware(config);
+const server = express();
+server.use('/static', express.static(path.join(__dirname, 'public')));
+server.engine('handlebars', hbs.__express);
+server.set('view engine', 'handlebars');
+server.set('view cache', true);
+middlewares.map(m => server.use(m))
+server.use(ssrMiddleware.middleware);
+server.get('*', (req, res) => {
+  res.render(template, {
+    state: JSON.stringify(res.state || {}),
+    content: res.content || ''
+  });
+});
 
 devWatcher({
     watchDir: __dirname,
     modulesToReload: /[/\\]app[/\\]/,
     callback: () => {
-        server.config.routes = require('./app/routes').default; 
+        config.routes = require('./app/routes').default; 
     }
 });
 
-server.start(() => console.log(`Server listening on port ${config.port}`));
+server.listen(8080, () => console.log('Server listening on port 8080'));
